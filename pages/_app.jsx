@@ -1,25 +1,13 @@
 import App from "next/app";
-import React, { useEffect } from "react";
-import BrandColorService, {
-  BrandColorContext
-} from "../src/services/brandColorService";
+import React from "react";
+import BrandColorProvider from "../src/services/brandColorService";
 
 function MyApp({ Component, pageProps }) {
-  const brandColorService = new BrandColorService();
-  useEffect(() => {
-    return () => {
-      clearInterval(brandColorService.interval);
-    };
-  }, []);
-
-
   return (
     <>
-      <BrandColorContext.Provider
-        value={brandColorService.brandColorObservable$}
-      >
+      <BrandColorProvider>
         <Component {...pageProps}/>
-      </BrandColorContext.Provider>
+      </BrandColorProvider>
     </>
   );
 }

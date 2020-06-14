@@ -1,24 +1,46 @@
 import { BehaviorSubject } from "rxjs";
-import React from "react";
+import React, { useEffect } from "react";
 
 const TIME = 2000;
 const YOIGO_COLORS = ["purple", "blue", "green", "orange"];
 
 export const BrandColorContext = React.createContext();
-export default class BrandColorService {
+let brandColorService
+
+const BrandColorProvider = ({ children }) => {
+  brandColorService = brandColorService ? brandColorService : new BrandColorService();
+
+  useEffect(() => {
+    return () => {
+      clearInterval(brandColorService.interval);
+    };
+  }, [])
+
+  return (
+    <BrandColorContext.Provider value={brandColorService.brandColorObservable$}>
+      {children}
+    </BrandColorContext.Provider>
+  );
+}
+
+class BrandColorService {
   interval; //: any
-  brandColorObservable$; //: Observable<string>
+  index = 0
+  brandColorObservable$ = new BehaviorSubject(YOIGO_COLORS[this.index]);
 
   constructor() {
-    let index = 0;
-    this.brandColorObservable$ = new BehaviorSubject(YOIGO_COLORS[0]);
-    this.interval = setInterval(() => {
-      if (index === YOIGO_COLORS.length - 1) {
-        index = 0;
-      } else {
-        index++;
-      }
-      this.brandColorObservable$.next(YOIGO_COLORS[index]);
-    }, TIME);
+    if (!this.interval) {
+      this.interval = setInterval(() => {
+        this.brandColorObservable$.next(YOIGO_COLORS[this.index]);
+        if (this.index === YOIGO_COLORS.length - 1) {
+          this.index = 0;
+        } else {
+          this.index++;
+        }
+        console.log('indice', this.index)
+      }, TIME);
+    }
   }
 }
+
+export default BrandColorProvider
