@@ -2,25 +2,23 @@ import { BehaviorSubject } from "rxjs";
 import React from "react";
 
 const TIME = 2000;
-export const BrandColorContext = React.createContext();
+const YOIGO_COLORS = ["purple", "blue", "green", "orange"];
 
+export const BrandColorContext = React.createContext();
 export default class BrandColorService {
   interval; //: any
   brandColorObservable$; //: Observable<string>
-  colors = ["purple", "blue", "green", "orange"];
-  currentColor = 'purple'
-  currentIdx = 0;
 
   constructor() {
-    this.brandColorObservable$ = new BehaviorSubject(this.currentColor);
+    let index = 0;
+    this.brandColorObservable$ = new BehaviorSubject(YOIGO_COLORS[0]);
     this.interval = setInterval(() => {
-      if (this.currentIdx === this.colors.length - 1) {
-        this.currentIdx = 0;
+      if (index === YOIGO_COLORS.length - 1) {
+        index = 0;
       } else {
-        this.currentIdx++;
+        index++;
       }
-      this.currentColor = this.colors[this.currentIdx]
-      this.brandColorObservable$.next(this.currentColor);
+      this.brandColorObservable$.next(YOIGO_COLORS[index]);
     }, TIME);
   }
 }

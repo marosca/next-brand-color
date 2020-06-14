@@ -1,27 +1,24 @@
 import App from "next/app";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import BrandColorService, {
-  BrandColorContext,
+  BrandColorContext
 } from "../src/services/brandColorService";
 
 function MyApp({ Component, pageProps }) {
-  const [currentColor, setCurrentColor] = useState("");
   const brandColorService = new BrandColorService();
-
   useEffect(() => {
-    brandColorService.brandColorObservable$.subscribe((color) => {
-      setCurrentColor(color);
-    });
-
     return () => {
       clearInterval(brandColorService.interval);
     };
   }, []);
 
+
   return (
     <>
-      <BrandColorContext.Provider value={currentColor}>
-        <Component {...pageProps} className="kkkkk"/>
+      <BrandColorContext.Provider
+        value={brandColorService.brandColorObservable$}
+      >
+        <Component {...pageProps}/>
       </BrandColorContext.Provider>
     </>
   );

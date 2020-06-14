@@ -1,8 +1,9 @@
-import { useContext } from 'react'
-import { BrandColorContext } from '../../../services/brandColorService';
+import { useContext } from "react";
+import { BrandColorContext } from "../../../services/brandColorService";
+import useObservable from "../../../hooks/useObservable";
 
 export default function Footer() {
-  const brandColor = useContext(BrandColorContext)
+  const brandColor = useObservable(useContext(BrandColorContext));
 
   return (
     <>
@@ -19,7 +20,7 @@ export default function Footer() {
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: ${brandColor || 'blue'};
+          background-color: ${brandColor || "blue"};
         }
       `}</style>
     </>

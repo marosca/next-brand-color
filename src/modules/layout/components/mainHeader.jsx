@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { useContext } from 'react';
-import { BrandColorContext } from '../../../services/brandColorService';
+import { useContext } from "react";
+import { BrandColorContext } from "../../../services/brandColorService";
+import useObservable from "../../../hooks/useObservable";
 
 export default function MainHeader() {
-  const brandColor = useContext(BrandColorContext)
+  const brandColor = useObservable(useContext(BrandColorContext));
 
   return (
     <>
@@ -39,7 +40,7 @@ export default function MainHeader() {
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: ${brandColor || 'blue'};
+          background-color: ${brandColor || "blue"};
         }
         ul {
           list-style: none;
@@ -52,7 +53,7 @@ export default function MainHeader() {
           color: white;
         }
         a:visited {
-          color: inherit
+          color: inherit;
         }
       `}</style>
     </>
