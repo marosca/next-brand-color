@@ -5,10 +5,9 @@ const TIME = 2000;
 const YOIGO_COLORS = ["purple", "blue", "green", "orange"];
 
 export const BrandColorContext = React.createContext();
-let brandColorService
 
 const BrandColorProvider = ({ children }) => {
-  brandColorService = brandColorService ? brandColorService : new BrandColorService();
+  const brandColorService = new BrandColorService();
 
   useEffect(() => {
     return () => {
@@ -29,6 +28,10 @@ class BrandColorService {
   brandColorObservable$ = new BehaviorSubject(YOIGO_COLORS[this.index]);
 
   constructor() {
+    if (BrandColorService._instance) {
+      return BrandColorService._instance
+    }
+    BrandColorService._instance = this;
     if (!this.interval) {
       this.interval = setInterval(() => {
         this.brandColorObservable$.next(YOIGO_COLORS[this.index]);
